@@ -9,6 +9,7 @@ import random
 import praw
 import os
 import asyncio
+from time import time
 
 reddit = praw.Reddit(client_id = "iQ-tTl7DjI-H9pxMqXJVnQ",
                     client_secret = "70YmKuAe7_ohob5OP_Qmo1MIU9X-gg",
@@ -31,6 +32,9 @@ previous_wisdom = "" #for geo.wisdom
 correct_answer = "" #for geo.trivia
 ghost_round_counter = 0 #for geo.trivia
 triviaIsRunning = False #for geo.trivia
+
+now = 0 #for gif cooldown
+prev_time = 0
 
 #for geo.trivia, to keep track of players in a trivia game
 class TriviaUsers:
@@ -75,6 +79,8 @@ async def on_message(message):
     global u
     global ghost_round_counter
 
+    global now
+    global prev_time
 
     #GEO.HELP COMMAND
     if message.content == 'geo.help':
@@ -340,10 +346,10 @@ async def on_message(message):
         await message.channel.purge(limit=1) 
 
         infoEmbed = discord.Embed(title="Info", color=0xFAD900)
-        infoEmbed.add_field(name="Club founder:", value="*****, inline="False")
-        infoEmbed.add_field(name="Current president:", value="*****, inline="false")
-        infoEmbed.add_field(name="Former presidents:", value="*****", inline="false")
-        infoEmbed.add_field(name="Geo Club Hall of Fame:", value="[Click here](*****)", inline="False") #this contains a google docs link
+        infoEmbed.add_field(name="Club founder:", value="Ben Woodward (2015)", inline="False")
+        infoEmbed.add_field(name="Current president:", value="Matthew Woodward", inline="false")
+        infoEmbed.add_field(name="Former presidents:", value="Ben Woodward, Daniel Innes, Matthew Woodward", inline="false")
+        infoEmbed.add_field(name="Geo Club Hall of Fame:", value="[Click here](https://docs.google.com/document/d/1rwhp_dL4SIHdHF-K-rFZLcnawzjrxWcNmQkxXyGV03g/edit?usp=sharing)", inline="False")
         infoEmbed.add_field(name="Bot created by:", value="Josh Muszka", inline="False")
 
         await ctx.send(embed=infoEmbed)
@@ -409,31 +415,38 @@ async def on_message(message):
 
     if not message.channel.id == 773296476054093824: #so that gifs don't send in politics channel id
         #rock gif
-        if str.casefold("sex") in str.casefold(message.content) or str.casefold("seggs") in str.casefold(message.content) or str.casefold("seck") in str.casefold(message.content) or str.casefold("cum") in str.casefold(message.content):
-            await message.reply(file=discord.File('gifs/rock.gif'))
 
-        #turkey gif
-        if str.casefold("turkey") in str.casefold(message.content) or str.casefold("turbkey") in str.casefold(message.content) or str.casefold("turkiye") in str.casefold(message.content) or str.casefold("türkiye") in str.casefold(message.content):
-            if not message.author.name == "Geo Club Bot":
-                await message.reply(file=discord.File('gifs/turkey.gif'))
 
-        #genshin gif
-        if str.casefold("genshin") in str.casefold(message.content):
-            await message.reply(file=discord.File('gifs/genshin.gif'))
+        now = time()
+        if now - prev_time >= 300: #if it has been 5 minutes since last gif was sent
 
-        #turkey is european argument
-        if str.casefold("turkey") in str.casefold(message.content) or str.casefold("türkiye") in str.casefold(message.content):
+            prev_time = time()
 
-            if str.casefold("european") in str.casefold(message.content) or str.casefold("europe") in str.casefold(message.content):
+            if str.casefold("sex") in str.casefold(message.content) or str.casefold("seggs") in str.casefold(message.content) or str.casefold("seck") in str.casefold(message.content) or str.casefold("cum") in str.casefold(message.content):
+                await message.reply(file=discord.File('gifs/rock.gif'))
+
+            #turkey gif
+            if str.casefold("turkey") in str.casefold(message.content) or str.casefold("turbkey") in str.casefold(message.content) or str.casefold("turkiye") in str.casefold(message.content) or str.casefold("türkiye") in str.casefold(message.content):
                 if not message.author.name == "Geo Club Bot":
-                    await message.reply("TÜRKIYE IS NOT EUROPE :flag_tr::flag_tr::flag_tr::flag_tr::flag_tr::flag_tr:")
-                    await message.channel.send("TÜRKIYE NUMBER ONE BESTEST COUNTRIE")
+                    await message.reply(file=discord.File('gifs/turkey.gif'))
 
-        #send ben shapiro gif
-        if str.casefold("shapiro") in str.casefold(message.content) or str.casefold("liberal") in str.casefold(message.content) or str.casefold("libtard") in str.casefold(message.content) or str.casefold("fact") in str.casefold(message.content) or str.casefold("logic") in str.casefold(message.content):
-            if not message.author.name == "Geo Club Bot":
-                if not message.content == "geo.fact":
-                    await message.reply(file=discord.File('gifs/shapiro.gif'))
+            #genshin gif
+            if str.casefold("genshin") in str.casefold(message.content):
+                await message.reply(file=discord.File('gifs/genshin.gif'))
+
+            #turkey is european argument
+            if str.casefold("turkey") in str.casefold(message.content) or str.casefold("türkiye") in str.casefold(message.content):
+
+                if str.casefold("european") in str.casefold(message.content) or str.casefold("europe") in str.casefold(message.content):
+                    if not message.author.name == "Geo Club Bot":
+                        await message.reply("TÜRKIYE IS NOT EUROPE :flag_tr::flag_tr::flag_tr::flag_tr::flag_tr::flag_tr:")
+                        await message.channel.send("TÜRKIYE NUMBER ONE BESTEST COUNTRIE")
+
+            #send ben shapiro gif
+            if str.casefold("shapiro") in str.casefold(message.content) or str.casefold("liberal") in str.casefold(message.content) or str.casefold("libtard") in str.casefold(message.content) or str.casefold("fact") in str.casefold(message.content) or str.casefold("logic") in str.casefold(message.content):
+                if not message.author.name == "Geo Club Bot":
+                    if not message.content == "geo.fact":
+                        await message.reply(file=discord.File('gifs/shapiro.gif'))
 
 
     #if bot gets pinged
@@ -455,10 +468,10 @@ async def on_member_join(member):
 @client.event
 async def on_typing(ctx, user, when):
     if user.id == 425705608923185152:
-        await ctx.send("STFU ANDREW DON'T EVEN FINISH TYPING", delete_after=5)
+        await ctx.send("STFU ANDREW DON'T EVEN FINISH TYPING", delete_after=4)
 
 # Run the client on the server
-client.run(*****) #bot token, censored for obvious reasons
+client.run('ODAzNDU1OTI5MTUxOTE0MDE0.YA-CpA.Qr_01PhI52Txgfm63lGjhD0TesE') #bot token, censored
 
 
 
