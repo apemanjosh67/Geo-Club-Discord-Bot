@@ -2,8 +2,6 @@
 #A Discord bot for a private geography club server
 #Memes, geography facts, inside jokes, trivia games, and more
 
-#NAMES/PERSONAL INFO HAVE BEEN REPLACED WITH *****, AS WELL AS THE BOT TOKEN (for obvious reasons)
-
 import discord
 import random
 import praw
@@ -471,7 +469,7 @@ async def on_typing(ctx, user, when):
         await ctx.send("STFU ANDREW DON'T EVEN FINISH TYPING", delete_after=4)
 
 # Run the client on the server
-client.run('ODAzNDU1OTI5MTUxOTE0MDE0.YA-CpA.Qr_01PhI52Txgfm63lGjhD0TesE') #bot token, censored
+client.run(TOKEN) #bot token, censored
 
 
 
