@@ -509,4 +509,4 @@ async def on_typing(ctx, user, when):
         await ctx.send("STFU ANDREW DON'T EVEN FINISH TYPING", delete_after=4)
 
 # Run the client on the server
-client.run('ODAzNDU1OTI5MTUxOTE0MDE0.YA-CpA.ivM0dncU9fNBsTbBCgUOxvXcZIQ') #bot token, censored
+client.run(TOKEN) #bot token, censored
