@@ -2,6 +2,8 @@
 #A Discord bot for a private geography club server
 #Memes, geography facts, inside jokes, trivia games, and more
 
+#NAMES/PERSONAL INFO HAVE BEEN REPLACED WITH *****, AS WELL AS THE BOT TOKEN (for obvious reasons)
+
 import discord
 import random
 import praw
@@ -94,12 +96,24 @@ async def on_message(message):
         helpEmbed.add_field(name=":earth_americas: geo.wisdom", value="Only if you can handle pure knowledge", inline="False")
         helpEmbed.add_field(name=":earth_americas: geo.meme", value="haha funny but with geography", inline="False")
         helpEmbed.add_field(name=":earth_americas: geo.info", value="Geo Club information", inline="False")
+        helpEmbed.add_field(name=":earth_americas: geo.moderation", value="List of commands for server moderation", inline="False")
         helpEmbed.set_footer(text="Geo Club winningest club")
         helpEmbed.set_author(name="Geo Club Bot")
 
         await ctx.send(embed=helpEmbed) #send embed
 
 
+    #brings up a list of moderation commands
+    if message.content == "geo.moderation":
+        await message.channel.purge(limit=1) #delete message sent by user
+
+        #create an embed containing a list of moderation commands
+        modEmbed = discord.Embed(title="Server Moderation", color=0xFAD900)
+        modEmbed.add_field(name="geo.clear n", value="Auto-clear n amount of messages", inline="False")
+        modEmbed.set_author(name="Owner and admins may use these commands")
+
+        await ctx.send(embed=modEmbed)
+        
 
     #sends a random geography fact
     if message.content == 'geo.fact':
@@ -407,7 +421,33 @@ async def on_message(message):
         for i in range(5):
             await ctx.send(f"<@{425705608923185152}> ", delete_after=1)
         
+    #clear messages command
+    if (message.content).index("geo.clear") == 0:
 
+        #if user is owner, or admin
+        guild = ctx.guild
+        owner = discord.utils.get(guild.roles, id=656967501724385280)
+        admin = discord.utils.get(guild.roles, id=656968274399199232)
+
+        if owner in message.author.roles or admin in message.author.roles:
+            arguments = []
+            arguments = (message.content).split(" ")
+
+            if len(arguments) == 1:
+                await ctx.send("Error, must specify number of messages to delete (ie. geo.clear 4)")
+            if len(arguments) == 2:
+                if arguments[1].isnumeric() == True:
+                    if int(arguments[1]) > 0 and int(arguments[1]) <= 100:
+                        await message.channel.purge(limit=1)#delete message sent by user
+                        await message.channel.purge(limit=int(arguments[1]))#purge specified number of messages
+                    else:
+                        await ctx.send("Error, number must be between 1 and 100")
+                else: 
+                    await ctx.send("Error, must specify number of messages to delete (ie. geo.clear 4)")
+            if len(arguments) >= 3:
+                await ctx.send("Error, must specify number of messages to delete (ie. geo.clear 4)")
+        else:
+            await ctx.send("Error, you do not have permission to use this command")
     #ALL THESE GIFS ARE INSIDE JOKES OF THE SERVER
     #if someone sends a message containing a certain word, bot replies with a certain gif
 
@@ -469,8 +509,4 @@ async def on_typing(ctx, user, when):
         await ctx.send("STFU ANDREW DON'T EVEN FINISH TYPING", delete_after=4)
 
 # Run the client on the server
-client.run(TOKEN) #bot token, censored
-
-
-
-
+client.run('ODAzNDU1OTI5MTUxOTE0MDE0.YA-CpA.ivM0dncU9fNBsTbBCgUOxvXcZIQ') #bot token, censored
