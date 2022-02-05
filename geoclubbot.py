@@ -1,4 +1,4 @@
-#Josh Muszka, Dec 2021 - Jan 2022
+#Josh Muszka, Dec 2021 - Feb 2022
 #A Discord bot for a private geography club server
 #Memes, geography facts, inside jokes, trivia games, and more
 
@@ -422,69 +422,79 @@ async def on_message(message):
             await ctx.send(f"<@{425705608923185152}> ", delete_after=1)
         
     #clear messages command
-    if (message.content).index("geo.clear") == 0:
+    if "geo.clear" in message.content:
+        if (message.content).index("geo.clear") == 0:
 
-        #if user is owner, or admin
-        guild = ctx.guild
-        owner = discord.utils.get(guild.roles, id=656967501724385280)
-        admin = discord.utils.get(guild.roles, id=656968274399199232)
+            #if user is owner, or admin
+            guild = ctx.guild
+            owner = discord.utils.get(guild.roles, id=656967501724385280)
+            admin = discord.utils.get(guild.roles, id=656968274399199232)
 
-        if owner in message.author.roles or admin in message.author.roles:
-            arguments = []
-            arguments = (message.content).split(" ")
+            if owner in message.author.roles or admin in message.author.roles:
+                arguments = []
+                arguments = (message.content).split(" ")    
+                quantity = arguments[1]
 
-            if len(arguments) == 1:
-                await ctx.send("Error, must specify number of messages to delete (ie. geo.clear 4)")
-            if len(arguments) == 2:
-                if arguments[1].isnumeric() == True:
-                    if int(arguments[1]) > 0 and int(arguments[1]) <= 100:
-                        await message.channel.purge(limit=1)#delete message sent by user
-                        await message.channel.purge(limit=int(arguments[1]))#purge specified number of messages
-                    else:
-                        await ctx.send("Error, number must be between 1 and 100")
+                if len(arguments) == 1:
+                    await ctx.send("Error, must specify number of messages to delete (ie. geo.clear 4)")
+                if len(arguments) == 2:
+                    if quantity.isnumeric():
+                        quantity = int(quantity)
+                        if quantity > 0 and quantity <= 100:
+                            await message.channel.purge(limit=1)#delete message sent by user
+                            await message.channel.purge(limit=quantity)#purge specified number of messages
+
+                            if (quantity == 1): message = quantity + " message cleared"
+                            else: message = str(quantity) + " messages cleared"
+                            await ctx.send(message, delete_after=3) #send confirmation message
+                            
+                        else:
+                            await ctx.send("Error, number must be between 1 and 100")
+                    else: await ctx.send("Error, argument must be numeric")
                 else: 
                     await ctx.send("Error, must specify number of messages to delete (ie. geo.clear 4)")
-            if len(arguments) >= 3:
-                await ctx.send("Error, must specify number of messages to delete (ie. geo.clear 4)")
-        else:
-            await ctx.send("Error, you do not have permission to use this command")
+                if len(arguments) >= 3:
+                    await ctx.send("Error, must specify number of messages to delete (ie. geo.clear 4)")
+            else:
+                await ctx.send("Error, you do not have permission to use this command")
+
+
+
     #ALL THESE GIFS ARE INSIDE JOKES OF THE SERVER
     #if someone sends a message containing a certain word, bot replies with a certain gif
 
-    if not message.channel.id == 773296476054093824: #so that gifs don't send in politics channel id
-        #rock gif
 
+    # now = time()
+    # if now - prev_time >= 300: #if it has been 5 minutes since last gif was sent
 
-        now = time()
-        if now - prev_time >= 300: #if it has been 5 minutes since last gif was sent
+    #     prev_time = time()
 
-            prev_time = time()
+    #     #rock gif
+    #     if str.casefold("sex") in str.casefold(message.content) or str.casefold("seggs") in str.casefold(message.content) or str.casefold("seck") in str.casefold(message.content) or str.casefold("cum") in str.casefold(message.content):
+    #         await message.reply(file=discord.File('gifs/rock.gif'))
 
-            if str.casefold("sex") in str.casefold(message.content) or str.casefold("seggs") in str.casefold(message.content) or str.casefold("seck") in str.casefold(message.content) or str.casefold("cum") in str.casefold(message.content):
-                await message.reply(file=discord.File('gifs/rock.gif'))
+    #     #turkey gif
+    #     if str.casefold("turkey") in str.casefold(message.content) or str.casefold("turbkey") in str.casefold(message.content) or str.casefold("turkiye") in str.casefold(message.content) or str.casefold("türkiye") in str.casefold(message.content):
+    #         if not message.author.name == "Geo Club Bot":
+    #             await message.reply(file=discord.File('gifs/turkey.gif'))
 
-            #turkey gif
-            if str.casefold("turkey") in str.casefold(message.content) or str.casefold("turbkey") in str.casefold(message.content) or str.casefold("turkiye") in str.casefold(message.content) or str.casefold("türkiye") in str.casefold(message.content):
-                if not message.author.name == "Geo Club Bot":
-                    await message.reply(file=discord.File('gifs/turkey.gif'))
+    #     #genshin gif
+    #     if str.casefold("genshin") in str.casefold(message.content):
+    #         await message.reply(file=discord.File('gifs/genshin.gif'))
 
-            #genshin gif
-            if str.casefold("genshin") in str.casefold(message.content):
-                await message.reply(file=discord.File('gifs/genshin.gif'))
+    #     #turkey is european argument
+    #     if str.casefold("turkey") in str.casefold(message.content) or str.casefold("türkiye") in str.casefold(message.content):
 
-            #turkey is european argument
-            if str.casefold("turkey") in str.casefold(message.content) or str.casefold("türkiye") in str.casefold(message.content):
+    #         if str.casefold("european") in str.casefold(message.content) or str.casefold("europe") in str.casefold(message.content):
+    #             if not message.author.name == "Geo Club Bot":
+    #                 await message.reply("TÜRKIYE IS NOT EUROPE :flag_tr::flag_tr::flag_tr::flag_tr::flag_tr::flag_tr:")
+    #                 await message.channel.send("TÜRKIYE NUMBER ONE BESTEST COUNTRIE")
 
-                if str.casefold("european") in str.casefold(message.content) or str.casefold("europe") in str.casefold(message.content):
-                    if not message.author.name == "Geo Club Bot":
-                        await message.reply("TÜRKIYE IS NOT EUROPE :flag_tr::flag_tr::flag_tr::flag_tr::flag_tr::flag_tr:")
-                        await message.channel.send("TÜRKIYE NUMBER ONE BESTEST COUNTRIE")
-
-            #send ben shapiro gif
-            if str.casefold("shapiro") in str.casefold(message.content) or str.casefold("liberal") in str.casefold(message.content) or str.casefold("libtard") in str.casefold(message.content) or str.casefold("fact") in str.casefold(message.content) or str.casefold("logic") in str.casefold(message.content):
-                if not message.author.name == "Geo Club Bot":
-                    if not message.content == "geo.fact":
-                        await message.reply(file=discord.File('gifs/shapiro.gif'))
+    #     #send ben shapiro gif
+    #     if str.casefold("shapiro") in str.casefold(message.content) or str.casefold("liberal") in str.casefold(message.content) or str.casefold("libtard") in str.casefold(message.content) or str.casefold("fact") in str.casefold(message.content) or str.casefold("logic") in str.casefold(message.content):
+    #         if not message.author.name == "Geo Club Bot":
+    #             if not message.content == "geo.fact":
+    #                 await message.reply(file=discord.File('gifs/shapiro.gif'))
 
 
     #if bot gets pinged
