@@ -502,6 +502,32 @@ async def on_message(message):
     if mention in message.content:
         await message.channel.send(f"no u <@{message.author.id}>")
 
+    #play command
+    if "geo.play" in message.content:
+        if (message.content).index("geo.play") == 0:
+            args= []
+            args = (message.content).split(" ")
+
+            if len(args) >= 2:
+                song = ""
+
+                for i in range(len(args)):
+                    if not i == 0:
+                        song += args[i]
+                        song+= " "
+
+                msg = "Now playing " + song
+                await message.channel.send(msg)
+
+                voice_channel = discord.utils.get(ctx.guild.voice_channels, name="General")
+                await voice_channel.connect()
+
+            else: await message.channel.send("Error: Must enter a song title")
+
+    #disconnect command
+    if message.content == "geo.disconnect":
+        await ctx.guild.voice_client.disconnect()
+
 #send a welcome message (inside jokes again)
 @client.event
 async def on_member_join(member):
